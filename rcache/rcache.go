@@ -27,7 +27,7 @@ func init() {
 	ResourceChan = make(chan Resource, 32)
 
 	var err error
-	db, err = bolt.Open("resource.db", 0600, nil)
+	db, err = bolt.Open("./boltdbs/resource.db", 0600, nil)
 	if err != nil {
 		log.Panic(err)
 	}

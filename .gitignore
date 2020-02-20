@@ -2,3 +2,4 @@
 .env
 resource.db
 .DS_Store
+main

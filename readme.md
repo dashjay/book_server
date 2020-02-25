@@ -1,4 +1,4 @@
-<p align="center"><img src=./logo.png alt="logo" style="zoom:13%;" /></p>
+<p align="center"><img src=./logo.png alt="logo" width="100" height="100" /></p>
 
 <p align="center">
 <img src="https://travis-ci.com/dashjay/book_server.svg?branch=master" alt="Build Status"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></p>
@@ -43,10 +43,12 @@ curl localhost/get?input=#12
 就可以获得#12号书籍
 ```
 
-<div style="display: flex">
-<img src="readme.assets/IMG_0301.PNG" alt="IMG_0301" style="zoom:33%;" />
-<img src="readme.assets/IMG_0302.PNG" alt="IMG_0301" style="zoom:33%;" />
+<div style="display: flex;">
+<img src="readme.assets/IMG_0301.PNG" alt="IMG_0301" width='33%' height='33%' />
+<img src="readme.assets/IMG_0302.PNG" alt="IMG_0301" width='33%' height='33%' />
 </div>
+
+
 
 
 

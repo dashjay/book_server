@@ -73,26 +73,15 @@ func Saver() {
 	}
 }
 
-func FlushAll(ctx *context.Context) {
-	err := db.Update(func(tx *bolt.Tx) error {
+func FlushAll() {
+	_ = db.Update(func(tx *bolt.Tx) error {
 		// 结束以后将桶创建回来
-		defer tx.CreateBucketIfNotExists(DBResource)
 
 		// 按照要求删除桶
-		err := tx.DeleteBucket(DBResource)
-		if err != nil {
-			return err
-		}
+		tx.DeleteBucket(DBResource)
+		tx.CreateBucketIfNotExists(DBResource)
 		return nil
 	})
-
-	if err != nil {
-		ctx.Output.JSON(map[string]interface{}{"msg": err.Error()}, false, false)
-		return
-	} else {
-		ctx.Output.JSON(map[string]interface{}{"msg": "ok"}, false, false)
-		return
-	}
 }
 
 func TestCache(ctx *context.Context) {

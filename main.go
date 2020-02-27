@@ -16,6 +16,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var resource = regexp.MustCompile(`#(\d*)`)
@@ -69,7 +70,7 @@ func MuxHandler(ctx *context.Context) {
 			buf.WriteString(k.GetFileName())
 			buf.WriteString("\n")
 		}
-		buf.WriteString("回复编号例如「#1」获取📚资源")
+		buf.WriteString("获取📚资源回复上方编号例如「#1」")
 
 		rb := reply.NewBaseMessage("text", buf.String())
 		ctx.ResponseWriter.Write(rb)
@@ -135,7 +136,15 @@ func main() {
 
 	go rcache.Saver()
 	beego.Get("/get", MuxHandler)
-	beego.Get("/flush", rcache.FlushAll)
+
+	go func() {
+		for {
+			// 24小时以后创建回来
+			time.Sleep(24 * time.Hour)
+			rcache.FlushAll()
+		}
+	}()
+
 	beego.Get("/test_cache", rcache.TestCache)
 	beego.Run(fmt.Sprintf(":%s", env.Port))
 }

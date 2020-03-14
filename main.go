@@ -56,21 +56,23 @@ func MuxHandler(ctx *context.Context) {
 		con := ds.C("resources")
 
 		var res []resources.Resources
-		err = con.Find(bson.M{"file_name": bson.RegEx{Pattern: temp[1], Options: "i"}}).All(&res)
+		err = con.Find(bson.M{"file_name": bson.RegEx{Pattern: temp[1], Options: "i"}}).Limit(10).All(&res)
 		if err != nil || len(res) == 0 {
-			rb := reply.NewBaseMessage("text", "没有找到相关资源")
+			rb := reply.NewBaseMessage("text", "亚历山大爷爷一本也没有找到😢\n")
 			ctx.ResponseWriter.Write(rb)
 			rcache.ResourceChan <- rcache.Resource{Key: []byte(temp[1]), Value: rb}
 			return
 		}
 
 		var buf strings.Builder
-		buf.WriteString("查询结果\n")
+		buf.WriteString("👴亚历山大爷爷\n帮你找到了这些书:\n")
 		for _, k := range res {
 			buf.WriteString(k.GetFileName())
 			buf.WriteString("\n")
 		}
-		buf.WriteString("获取📚资源回复上方编号例如「#1」")
+		buf.WriteString("获取某本书资源回复上方编号\n例如 #1\n <a href='weixin://bizmsgmenu?msgmenuid=1&msgmenucontent=")
+		buf.WriteString(fmt.Sprintf("#%d", res[0].ID))
+		buf.WriteString("'>「点我获取上方第一本」</a>")
 
 		rb := reply.NewBaseMessage("text", buf.String())
 		ctx.ResponseWriter.Write(rb)
@@ -122,7 +124,7 @@ func MuxHandler(ctx *context.Context) {
 		}
 
 		rb := reply.NewBaseMessage("text", strings.Join([]string{
-			"找到了资源，请查收\n\n", r.GetFileName(), "\n下载链接\n", r.Link,
+			"找到这本书了，你看看还满意么\n\n好用记得推荐给你的同学哟\n\n", r.GetFileName(), "\n下载链接:\n", r.Link,
 		}, ""))
 		ctx.ResponseWriter.Write(rb)
 		rcache.ResourceChan <- rcache.Resource{Key: []byte(res[1]), Value: rb,}

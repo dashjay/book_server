@@ -27,7 +27,7 @@ func init() {
 	ResourceChan = make(chan Resource, 32)
 
 	var err error
-	db, err = bolt.Open("./boltdbs/resource.db", 0600, nil)
+	db, err = bolt.Open("./boltdbs/book_server.db", 0600, nil)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -76,7 +76,6 @@ func Saver() {
 func FlushAll() {
 	_ = db.Update(func(tx *bolt.Tx) error {
 		// 结束以后将桶创建回来
-
 		// 按照要求删除桶
 		tx.DeleteBucket(DBResource)
 		tx.CreateBucketIfNotExists(DBResource)
